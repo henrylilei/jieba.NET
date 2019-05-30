@@ -20,7 +20,7 @@ namespace JiebaNet.Segmenter
         /// </summary>
         public double Total { get; set; }
 
-        private WordDictionary()
+        public WordDictionary()
         {
             LoadDict();
 

@@ -12,7 +12,7 @@ namespace JiebaNet.Segmenter
 {
     public class JiebaSegmenter
     {
-        private static readonly WordDictionary WordDict = WordDictionary.Instance;
+        private readonly WordDictionary WordDict = new WordDictionary();
         private static readonly IFinalSeg FinalSeg = Viterbi.Instance;
         private static readonly ISet<string> LoadedPath = new HashSet<string>();
 
