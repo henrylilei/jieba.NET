@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>lile.jieba.NET</id>
-    <version>0.39.4</version>
+    <version>0.39.5</version>
     <title>jieba.NET Segmenter</title>
     <authors>andersc</authors>
     <owners>Anders Cui</owners>
@@ -14,12 +14,6 @@
     <releaseNotes>Change the segmenter to use a instance version of WordDictionary instead of singleton, this will allow multiple instances of Segmenter in the same process</releaseNotes>
     <tags>NLP, TextSegmentation, WordSegmentation</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.0">
-        <dependency id="Newtonsoft.Json" version="8.0.2" />
-      </group>
-      <group targetFramework=".NETFramework4.5">
-        <dependency id="Newtonsoft.Json" version="8.0.2" />
-      </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Newtonsoft.Json" version="9.0.1" />
       </group>
