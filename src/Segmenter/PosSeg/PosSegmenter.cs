@@ -11,8 +11,9 @@ namespace JiebaNet.Segmenter.PosSeg
 {
     public class PosSegmenter
     {
-        private static readonly WordDictionary WordDict = WordDictionary.Instance;
+        private readonly WordDictionary WordDict;
         private static readonly Viterbi PosSeg = Viterbi.Instance;
+        private IDictionary<string, string> _wordTagTab;
 
         // TODO: 
         private static readonly object locker = new object();
@@ -32,23 +33,42 @@ namespace JiebaNet.Segmenter.PosSeg
 
         #endregion
 
-        private static IDictionary<string, string> _wordTagTab;
+        private JiebaSegmenter _segmenter;
 
-        static PosSegmenter()
+        public PosSegmenter(string wordTagFile=null)
         {
-            LoadWordTagTab();
+            _segmenter = new JiebaSegmenter();
+            WordDict = _segmenter.WordDict;
+
+            if (string.IsNullOrEmpty(wordTagFile))
+            {
+                wordTagFile = ConfigManager.MainDictFile;
+            }
+            LoadWordTagTab(wordTagFile);
         }
 
-        private static void LoadWordTagTab()
+        public PosSegmenter(JiebaSegmenter segmenter, string wordTagFile=null)
+        {
+            _segmenter = segmenter;
+            WordDict = _segmenter.WordDict;
+
+            if (string.IsNullOrEmpty(wordTagFile))
+            {
+                wordTagFile = ConfigManager.MainDictFile;
+            }
+            LoadWordTagTab(wordTagFile);
+        }
+
+        private void LoadWordTagTab(string wordTagFile)
         {
             try
             {
                 _wordTagTab = new Dictionary<string, string>();
-                var lines = File.ReadAllLines(ConfigManager.MainDictFile, Encoding.UTF8);
+                var lines = File.ReadAllLines(wordTagFile, Encoding.UTF8);
                 foreach (var line in lines)
                 {
                     var tokens = line.Split(' ');
-                    if (tokens.Length < 2)
+                    if (tokens.Length < 3)
                     {
                         Debug.Fail(string.Format("Invalid line: {0}", line));
                         continue;
@@ -68,18 +88,6 @@ namespace JiebaNet.Segmenter.PosSeg
             {
                 Debug.Fail(fe.Message);
             }
-        }
-
-        private JiebaSegmenter _segmenter;
-
-        public PosSegmenter()
-        {
-            _segmenter = new JiebaSegmenter();
-        }
-
-        public PosSegmenter(JiebaSegmenter segmenter)
-        {
-            _segmenter = segmenter;
         }
 
         private void CheckNewUserWordTags()

@@ -20,9 +20,17 @@ namespace JiebaNet.Segmenter
         /// </summary>
         public double Total { get; set; }
 
-        public WordDictionary()
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="mainDictFile">User-defined main dictionary file to replace the built-in one.</param>
+        public WordDictionary(string mainDictFile=null)
         {
-            LoadDict();
+            if (string.IsNullOrEmpty(mainDictFile))
+            {
+                mainDictFile = MainDict;
+            }
+            LoadDict(mainDictFile);
 
             Debug.WriteLine("{0} words (and their prefixes)", Trie.Count);
             Debug.WriteLine("total freq: {0}", Total);
@@ -33,14 +41,14 @@ namespace JiebaNet.Segmenter
             get { return lazy.Value; }
         }
 
-        private void LoadDict()
+        private void LoadDict(string mainDictFile)
         {
             try
             {
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                using (var sr = new StreamReader(MainDict, Encoding.UTF8))
+                using (var sr = new StreamReader(mainDictFile, Encoding.UTF8))
                 {
                     string line = null;
                     while ((line = sr.ReadLine()) != null)
