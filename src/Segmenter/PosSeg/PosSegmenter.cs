@@ -35,16 +35,8 @@ namespace JiebaNet.Segmenter.PosSeg
 
         private JiebaSegmenter _segmenter;
 
-        public PosSegmenter(string wordTagFile=null)
+        public PosSegmenter(string wordTagFile=null) : this(new JiebaSegmenter(), wordTagFile)
         {
-            _segmenter = new JiebaSegmenter();
-            WordDict = _segmenter.WordDict;
-
-            if (string.IsNullOrEmpty(wordTagFile))
-            {
-                wordTagFile = ConfigManager.MainDictFile;
-            }
-            LoadWordTagTab(wordTagFile);
         }
 
         public PosSegmenter(JiebaSegmenter segmenter, string wordTagFile=null)
